@@ -21,6 +21,6 @@ b) A player creates a paradox (i.e. break one of the rules) -> they lose.
 
 
 
-Variations:
+Known Variations:
 - having a fixed turn order
 

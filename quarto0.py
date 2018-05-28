@@ -133,6 +133,8 @@ for player in cycle(players):
             library[suit] = []
         # if the player can't ask for this suit due to hand constraints
 
+
+
         value = input("What is the value of the card? ")
         # if all values in this suit have already been defined, and the given value is not within them
         if value not in library[suit] and len(library[suit]) >= FAMILYSIZE:
@@ -157,6 +159,8 @@ for player in cycle(players):
         if response == "n":
             card.remove_owner(nameA)
             # if only one owner left, assign card to them
+
+
 
         # give card to the player
         if response == "y":
