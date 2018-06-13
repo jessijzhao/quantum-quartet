@@ -1,16 +1,12 @@
-
-def paradox(name):
-    print ("Game End: A paradox has been created by {}.".format(name))
-
 class cardclass(object):
 
-    def __init__(self, value, suit):
+    def __init__(self, value, family, names):
         self.value = value
-        self.suit = suit
+        self.family = family
         self.owners = names
 
-    def getsuit(self):
-        return self.suit
+    def getfamily(self):
+        return self.family
 
     def getvalue(self):
         return self.value
@@ -20,7 +16,7 @@ class cardclass(object):
 
     def __eq__(self, other):
         """Check equality between two cards."""
-        return self.getvalue() == other.getvalue() and self.getsuit() == other.getsuit()
+        return self.getvalue() == other.getvalue() and self.getfamily() == other.getfamily()
 
     def samesuit(self, other):
         """Check if two cards belong to the same suit."""
@@ -28,7 +24,7 @@ class cardclass(object):
 
     def undefined(self):
         """Check if a card is completely undefined."""
-        return self.getvalue() == None and self.getsuit() == None
+        return self.getvalue() == None and self.getfamily() == None
 
     def remove_owner(self, name):
         self.owners.remove(name)
@@ -37,20 +33,16 @@ class cardclass(object):
         self.owners = [name]
 
     def __str__(self):
-        return str(self.value) + " in the category of " + str(self.suit)
+        return str(self.value) + " from the family of " + str(self.family)
 
 class playerclass(object):
 
-    def __init__(self, name):
+    def __init__(self):
         """Create a hand with four undefined cards"""
-        self.name = name
-        self.hand = 4 * [cardclass(None, None)]
+        self.hand = 4 * [cardclass(None, None, [])]
 
     def gethand(self):
         return self.hand
-
-    def getname(self):
-        return self.name
 
     def __str__(self):
         res = ""
@@ -66,20 +58,38 @@ class playerclass(object):
         hand = self.gethand()
         for i in range(len(hand)):
             card = hand[i]
-            if card.value == None and card.samesuit(newcard):
+            if card.value == None and card.samefamily(newcard):
                 self.hand[i] = newcard
                 done = True
+                break
         if done == False:
             for i in range(len(hand)):
                 card = hand[i]
                 if card.undefined():
                     self.hand[i] = newcard
-                    done = True
-        if done == False:
-            paradox()
+                    break
+
+    def check_family(self, family):
+        hand = self.gethand()
+        for i in range(len(hand)):
+            card = hand[i]
+            if card.getfamily() == family:
+                return True
+        for i in range(len(hand)):
+            card = hand[i]
+            if card.undefined():
+                self.hand[i] = cardclass(None, family, [])
+                return True
+        return False
 
     def remove_card(self, card):
-        self.cards.remove(card)
+        self.hand.remove(card)
 
     def iswin(self):
         None
+
+    def __str__(self):
+        res = ""
+        for card in self.hand:
+            res + "\n" + card.__str__()
+        return res

@@ -5,24 +5,35 @@ FAMILYSIZE = 4
 
 def main():
 
-    # pregame:
-    print("Welcome to Quantum Quarto!")
-
-    # get the number of players and their names
-    num = 1
-    while num < 3:
-        num = int(input("This game requires at least 3 players. Please enter the number of players: "))
+    print("Welcome to Quantum Quartet!")
 
     players, library, names = {}, {}, []
 
+    # get the number of players
+    num = 1
+    while num < 3:
+        try:
+            num = int(input("This game requires at least 3 players. Please enter the number of players: "))
+        except ValueError:
+            print ("Please enter a valid number.")
+
+    # get players' names
     for i in range(num):
-        name = input("Please enter Player {}'s name: ".format(i + 1)).lower()
+        name = ""
+        # ensure name isn't empty
+        while name == "":
+            name = input("Please enter Player {}'s name: ".format(i + 1)).lower()
+        # initialize hand for each player
         players[name] = playerclass()
+        # also remember name TODO FIX THIS
         names.append(name)
 
     # cycle through the players until win conditions are met or a paradox happens
     playorder = [random.choice(list(players))]
+
     for nameQ in playorder:
+
+        profile = players[nameQ]
 
         # announce whose turn it is
         print ("This is {}'s turn.".format(nameQ))
@@ -48,8 +59,8 @@ def main():
             elif len(library) < num:
                 library[family] = []
             # if the player can't ask for this family due to hand constraints
-
-
+            if not profile.check_family(family):
+                pradox(nameQ)
 
             value = input("What is the value of the card? ")
             # if all values in this family have already been defined, and the given value is not one of them
@@ -66,29 +77,37 @@ def main():
                 if response in ["y", "n"]:
                     break
 
+            owners = card.getowners()
+
             # check whether the answer creates a paradox
-            if (response == "n" and card.getowners() == [nameA] or
-                response == "y" and nameA not in card.getowners()):
+            if (response == "n" and owners == [nameA] or
+                response == "y" and nameA not in owners):
                 paradox(nameA)
 
             # remove the askee from list of owners
             if response == "n":
                 card.remove_owner(nameA)
                 # if only one owner left, assign card to them
-                if len(card.getowners()) == 1:
-                    hand = players[card.getowners()[0]]
+                if len(owners) == 1:
+                    hand = players[owners[0]]
                     hand.assign_card(card)
 
             # give card to the player who asked
             if response == "y":
+                if len(owners) > 1:
+                    players[nameA].add_card(card)
                 card.set_owner(nameQ)
                 # change their hands accordingly
                 players[nameQ].add_card(card)
                 players[nameA].remove_card(card)
 
             # if they negated or the player won, stop this player's turn
-            if response == "no" or player.iswin():
+            if response == "no" or profile.iswin():
                 break
+
+            for p in players:
+                print (p)
+                print (players[p])
 
         # check if win conditions were met
         if player.iswin():
@@ -97,8 +116,5 @@ def main():
 
 if __name__ == "__main__":
     main()
-
-
-
 
 
