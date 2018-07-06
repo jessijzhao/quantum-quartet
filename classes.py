@@ -1,18 +1,14 @@
 class cardclass(object):
 
-    def __init__(self, value, family, names):
+    def __init__(self, value, family):
         self.value = value
         self.family = family
-        self.owners = names
 
     def getfamily(self):
         return self.family
 
     def getvalue(self):
         return self.value
-
-    def getowners(self):
-        return self.owners
 
     def __eq__(self, other):
         """Check equality between two cards."""
@@ -26,12 +22,6 @@ class cardclass(object):
         """Check if a card is completely undefined."""
         return self.getvalue() == None and self.getfamily() == None
 
-    def remove_owner(self, name):
-        self.owners.remove(name)
-
-    def set_owner(self, name):
-        self.owners = [name]
-
     def __str__(self):
         return str(self.value) + " from the family of " + str(self.family)
 
@@ -39,7 +29,7 @@ class playerclass(object):
 
     def __init__(self):
         """Create a hand with four undefined cards"""
-        self.hand = 4 * [cardclass(None, None, [])]
+        self.hand = 4 * [cardclass(None, None)]
 
     def gethand(self):
         return self.hand
@@ -68,11 +58,9 @@ class playerclass(object):
                     break
         if new:
             if done:
-                self.hand.append(cardclass(None, None, []))
+                self.hand.append(cardclass(None, None))
             else:
                 self.hand.append(card)
-
-
 
     def check_family(self, family):
         hand = self.gethand()
@@ -83,7 +71,7 @@ class playerclass(object):
         for i in range(len(hand)):
             card = hand[i]
             if card.undefined():
-                self.hand[i] = cardclass(None, family, [])
+                self.hand[i] = cardclass(None, family)
                 return True
         return False
 
