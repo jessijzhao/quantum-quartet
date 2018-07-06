@@ -1,0 +1,4 @@
+- take out the ownership indicator from the card class itself
+- add card ids??? there are always FAMILYSIZE * PLAYERS cards
+  -> probably inefficient
+

@@ -18,9 +18,9 @@ class cardclass(object):
         """Check equality between two cards."""
         return self.getvalue() == other.getvalue() and self.getfamily() == other.getfamily()
 
-    def samesuit(self, other):
-        """Check if two cards belong to the same suit."""
-        return self.getsuit() == other.getsuit()
+    def samefamily(self, other):
+        """Check if two cards belong to the same family."""
+        return self.getfamily() == other.getfamily()
 
     def undefined(self):
         """Check if a card is completely undefined."""
@@ -50,10 +50,7 @@ class playerclass(object):
             res.append(c.__str__() + '\n')
         return res
 
-    def add_card(self, card):
-        self.hand.append(card)
-
-    def assign_card(self, newcard):
+    def assign_card(self, newcard, new=False):
         done = False
         hand = self.gethand()
         for i in range(len(hand)):
@@ -62,12 +59,20 @@ class playerclass(object):
                 self.hand[i] = newcard
                 done = True
                 break
-        if done == False:
+        if not done:
             for i in range(len(hand)):
                 card = hand[i]
                 if card.undefined():
                     self.hand[i] = newcard
+                    done = True
                     break
+        if new:
+            if done:
+                self.hand.append(cardclass(None, None, []))
+            else:
+                self.hand.append(card)
+
+
 
     def check_family(self, family):
         hand = self.gethand()
@@ -91,5 +96,5 @@ class playerclass(object):
     def __str__(self):
         res = ""
         for card in self.hand:
-            res + "\n" + card.__str__()
+            res += card.__str__() + "\n"
         return res

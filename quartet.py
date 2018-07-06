@@ -7,6 +7,7 @@ def main():
 
     print("Welcome to Quantum Quartet!")
 
+    # players: {name: hand} / library: {family: (card : owners)} / names: [name]
     players, library, names = {}, {}, []
 
     # get the number of players
@@ -58,18 +59,18 @@ def main():
             family = input("What is the family of the card? ")
             # if all families have already been defined, and the given family is not within them
             if family not in library and len(library) == num:
-                pradox(nameQ)
+                paradox(nameQ)
             # add the family if applicable
             elif len(library) < num:
                 library[family] = []
             # if the player can't ask for this family due to hand constraints
             if not profile.check_family(family):
-                pradox(nameQ)
+                paradox(nameQ)
 
             value = input("What is the value of the card? ")
             # if all values in this family have already been defined, and the given value is not one of them
             if value not in library[family] and len(library[family]) >= FAMILYSIZE:
-                pradox(nameQ)
+                paradox(nameQ)
             # add the value to the family and create the card if applicable
             elif len(library[family]) < 4:
                 library[family].append(value)
