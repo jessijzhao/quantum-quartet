@@ -20,15 +20,19 @@ def main():
     # get players' names
     for i in range(num):
         name = ""
-        # ensure name isn't empty
-        while name == "":
+        # ensure name isn't empty or a double
+        while name == "" or name in names:
             name = input("Please enter Player {}'s name: ".format(i + 1)).lower()
+            if name in names:
+                print("Names have to be unique. ", end='')
         # initialize hand for each player
         players[name] = playerclass()
         # also remember name TODO FIX THIS
         names.append(name)
 
+
     # cycle through the players until win conditions are met or a paradox happens
+    # TODO: have two modes for either fixed or flexible order
     playorder = [random.choice(list(players))]
 
     for nameQ in playorder:
@@ -71,6 +75,10 @@ def main():
                 library[family].append(value)
                 card = cardclass(value, family, names)
 
+            for p in players:
+                print (p)
+                print (players[p].__str__())
+
             # get the answer of the player that was asked
             while True:
                 response = input("{}'s reponse (type y or n): ".format(nameA)).lower()
@@ -95,22 +103,22 @@ def main():
             # give card to the player who asked
             if response == "y":
                 if len(owners) > 1:
-                    players[nameA].add_card(card)
+                    players[nameA].assign_card(card)
                 card.set_owner(nameQ)
                 # change their hands accordingly
-                players[nameQ].add_card(card)
+                players[nameQ].assign_card(card, new=True)
                 players[nameA].remove_card(card)
-
-            # if they negated or the player won, stop this player's turn
-            if response == "no" or profile.iswin():
-                break
 
             for p in players:
                 print (p)
-                print (players[p])
+                print (players[p].__str__())
+
+            # if they negated or the player won, stop this player's turn
+            if response == "n" or profile.iswin():
+                break
 
         # check if win conditions were met
-        if player.iswin():
+        if profile.iswin():
             break
 
 
