@@ -79,7 +79,8 @@ class playerclass(object):
         self.hand.remove(card)
 
     def iswin(self):
-        None
+        # TODO
+        return False
 
     def __str__(self):
         res = ""

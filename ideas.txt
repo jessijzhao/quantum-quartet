@@ -2,3 +2,8 @@
 - add card ids??? there are always FAMILYSIZE * PLAYERS cards
   -> probably inefficient
 
+how about hand being a library without owners? no need for cards then
+    # how about hand as above and cards having set owners????
+    though it makes sense to group by family and then have the values within
+
+ANYWAY LOOKS LIKE MAJOR RESTRUCTURING SO NO NEED TO CONTINUE FIXING THINGS FOR NOW

@@ -1,7 +1,13 @@
 from classes import *
 import random
 
+# the size of any family
 FAMILYSIZE = 4
+# whether playorder follows a fixed scheme or depends on the asker/askee
+FIXED = False
+
+def paradox(name):
+    print("Player {} created a paradox.".format(name))
 
 def main():
 
@@ -28,7 +34,7 @@ def main():
                 print("Names have to be unique. ", end='')
         # initialize hand for each player
         players[name] = playerclass()
-        # also remember name TODO FIX THIS
+        # also remember name TODO FIX THIS (names = keys of dict players)
         names.append(name)
 
 
@@ -122,10 +128,16 @@ def main():
 
             # if they negated or the player won, stop this player's turn
             if response == "n" or profile.iswin():
+                if FIXED:
+                    #TODO
+                # the next person to ask is the askee
+                else:
+                    playorder.append(nameA)
                 break
 
         # check if win conditions were met
         if profile.iswin():
+            print("Player {} won with the family of {}".format(nameQ, family))
             break
 
 
