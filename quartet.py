@@ -3,18 +3,26 @@ import random
 
 # the size of any family
 FAMILYSIZE = 4
+
 # whether playorder follows a fixed scheme or depends on the asker/askee
 FIXED = False
+
+def printhand():
+    for p in players:
+        print (p)
+        print (players[p])
+
+def printlib():
+    print (lib)
+
 
 def paradox(name):
     print("Player {} created a paradox.".format(name))
 
+
 def main():
 
     print("Welcome to Quantum Quartet!")
-
-    # players: {name: hand} / library: {family: {value: owners}} / names: [name]
-    players, library, names = {}, {}, []
 
     # get the number of players
     num = 1
@@ -23,6 +31,9 @@ def main():
             num = int(input("This game requires at least 3 players. Please enter the number of players: "))
         except ValueError:
             print ("Please enter a valid number.")
+
+    # players: {name: hand} / names: [name]
+    players, names = {}, []
 
     # get players' names
     for i in range(num):
@@ -33,10 +44,11 @@ def main():
             if name in names:
                 print("Names have to be unique. ", end='')
         # initialize hand for each player
-        players[name] = playerclass()
-        # also remember name TODO FIX THIS (names = keys of dict players)
+        players[name] = newhand()
         names.append(name)
 
+    # initialize library
+    lib = library(names)
 
     # cycle through the players until win conditions are met or a paradox happens
     # TODO: have two modes for either fixed or flexible order
@@ -63,30 +75,14 @@ def main():
                     break
 
             family = input("What is the family of the card? ")
-            # if all families have already been defined, and the given family is not within them
-            if family not in library and len(library) == num:
-                paradox(nameQ)
-            # add the family if applicable
-            elif len(library) < num:
-                library[family] = {}
-            # if the player can't ask for this family due to hand constraints
-            if not profile.check_family(family):
-                paradox(nameQ)
-
             value = input("What is the value of the card? ")
-            # if all values in this family have already been defined, and the given value is not one of them
-            if value not in library[family] and len(library[family]) >= FAMILYSIZE:
+            try:
+                lib.addCard(family, value, num)
+                profile.addFamily(family)
+            except ValueError:
                 paradox(nameQ)
-            # add owners and value to family and create card if applicable
-            elif len(library[family]) < 4:
-                library[family][value] = names
-                print(library)
-                card = cardclass(value, family)
 
-            # TESTING
-            for p in players:
-                print (p)
-                print (players[p].__str__())
+            printhand()
 
             # get the answer of the player that was asked
             while True:
@@ -128,11 +124,11 @@ def main():
 
             # if they negated or the player won, stop this player's turn
             if response == "n" or profile.iswin():
-                if FIXED:
-                    #TODO
-                # the next person to ask is the askee
-                else:
-                    playorder.append(nameA)
+                # if FIXED:
+                #     #TODO
+                # # the next person to ask is the askee
+                # else:
+                playorder.append(nameA)
                 break
 
         # check if win conditions were met
