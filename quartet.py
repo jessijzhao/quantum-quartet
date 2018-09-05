@@ -8,11 +8,14 @@ FAMILYSIZE = 4
 # whether playorder follows a fixed scheme or depends on the asker/askee
 FIXED = False
 
+DEBUG = False
+
 # functions for debugging
-def printhand(players):
+def printstate(players, lib):
     for p in players:
-        print (p)
+        print (p + "'s hand:")
         print (players[p])
+    print (lib)
 
 def paradox(name):
     """ Called upon creation of paradox by player name """
@@ -82,8 +85,9 @@ def main():
             except ValueError:
                 paradox(nameQ)
 
-            printhand(players)
-            print (lib)
+
+            if DEBUG:
+                printstate(players, lib)
 
             # get the answer of the player that was asked
             while True:
@@ -116,8 +120,8 @@ def main():
                     owner = owners[0]
                     players[owner].assignCard(family, value)
 
-            printhand(players)
-            print (lib)
+            if DEBUG:
+                printstate(players, lib)
 
             # if they negated or the player won, stop this player's turn
             if response == "n" or profile.iswin():

@@ -35,7 +35,7 @@ class library(object):
         self.lib[family][value] = names
 
     def __str__(self):
-        res = ""
+        res = "library:\n"
         for family in self.lib:
             for value in self.lib[family]:
                 res += value + " in the family of " + family + " has owners " + ' '.join(self.lib[family][value]) + "\n"
@@ -85,7 +85,7 @@ class newhand(object):
         res = ""
         for family in self.hand:
             if family == None:
-                res += str(self.hand[family]) + " undefined" + "\n"
+                res += str(self.hand[family]) + " undefined\n"
             else:
                 for value in self.hand[family]:
                     res += str(value) + " in the family of " + str(family) + "\n"
@@ -98,6 +98,6 @@ class newhand(object):
     def iswin(self):
         """ Checks if winnning conditions have been met by player """
         for fam in self.hand:
-            if len(fam) == 4:
+            if fam != None and len(self.hand[fam]) == 4:
                 return True
         return False

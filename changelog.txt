@@ -3,6 +3,10 @@ TODO:
 - use card ids??? there are always FAMILYSIZE * PLAYERS cards
   -> probably inefficient
 
+Changes in 0.2.1:
+- fixed iswin condition bug
+- edited print statements for state of the game
+- made prints optional
 
 Changes in 0.2:
 - first buggy working version after major restructuring
