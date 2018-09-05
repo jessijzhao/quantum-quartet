@@ -11,4 +11,6 @@ how about hand being a library without owners? no need for cards then
 
 Changes in 0.1:
 - added changelog (included todos from ideas)
+- updated to non-working version of classes.py and quartet.py
+- updated README
 
