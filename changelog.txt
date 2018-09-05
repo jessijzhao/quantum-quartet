@@ -1,16 +1,18 @@
 TODO:
-- take out the ownership indicator from the card class itself
-- add card ids??? there are always FAMILYSIZE * PLAYERS cards
+- have two modes for either fixed or flexible order
+- use card ids??? there are always FAMILYSIZE * PLAYERS cards
   -> probably inefficient
 
-how about hand being a library without owners? no need for cards then
-    # how about hand as above and cards having set owners????
-    though it makes sense to group by family and then have the values within
-  also how about {family: value} as cards??, e.g. {"fruits": "apple"}
 
+Changes in 0.2:
+- first buggy working version after major restructuring
+- fixed iswin condition and paradox amongst others
 
 Changes in 0.1:
 - added changelog (included todos from ideas)
 - updated to non-working version of classes.py and quartet.py
 - updated README
+
+Pre-Changelog:
+- major restructuring from having a card class and no library class
 

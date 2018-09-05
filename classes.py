@@ -16,33 +16,35 @@ class library(object):
         if family not in self.lib:
             if len(self.lib) < num:
                 self.lib[family] = {}
-
-                # add value, if appropriate
-                if value not in self.lib:
-                    if len(self.lib[family]) < num:
-                        self.lib[family][value] = self.names
-                    else:
-                        raise ValueError
             else:
                 raise ValueError
 
-    def exists(self, family, value):
-        try:
-            return (value in self.lib[family])
-        except KeyError:
-            return False
+        # add value, if appropriate
+        if value not in self.lib[family]:
+            if len(self.lib[family]) < 4:
+                self.lib[family][value] = self.names
+            else:
+                raise ValueError
+
+
+    def getOwners(self, family, value):
+        """ Gets owners of a given card """
+        return self.lib[family][value]
+
+    def setOwner(self, family, value, names):
+        self.lib[family][value] = names
 
     def __str__(self):
         res = ""
         for family in self.lib:
             for value in self.lib[family]:
-                res += str(value) + " in the family of " + str(family) + " has owners " + str(lib[family][value])
+                res += value + " in the family of " + family + " has owners " + ' '.join(self.lib[family][value]) + "\n"
         return res
 
 class newhand(object):
     """
     Keeps track of cards in a player's hand.
-    Implementation: {family: [values], None: num}
+    Implementation: {family: [values], None: int}
     """
 
     def __init__(self):
@@ -60,27 +62,24 @@ class newhand(object):
             else:
                 raise ValueError
 
-    def assign_card(self, newcard, new=False):
-        done = False
-        hand = self.hand
-        for i in range(len(hand)):
-            card = hand[i]
-            if card.value == None and card.samefamily(newcard):
-                self.hand[i] = newcard
-                done = True
-                break
-        if not done:
-            for i in range(len(hand)):
-                card = hand[i]
-                if card.undefined():
-                    self.hand[i] = newcard
-                    done = True
-                    break
+    def assignCard(self, family, value, new=False):
+        """Assigns card to player's hand"""
         if new:
-            if done:
-                self.hand.append(cardclass(None, None))
+            if family not in self.hand:
+                self.hand[family] = [value]
             else:
-                self.hand.append(card)
+                self.hand[family].append(value)
+        else:
+            self.addFamily(family)
+            val = self.hand[family]
+            if None in val:
+                val.remove(None)
+                val.append(value)
+            elif len(val) < 4 and self.hand[None] > 0:
+                val.append(value)
+                self.hand[None] -= 1
+            else:
+                raise ValueError
 
     def __str__(self):
         res = ""
@@ -89,12 +88,16 @@ class newhand(object):
                 res += str(self.hand[family]) + " undefined" + "\n"
             else:
                 for value in self.hand[family]:
-                    res += str(value) + " in the family of " + str(family)+ "\n"
+                    res += str(value) + " in the family of " + str(family) + "\n"
         return res
 
-    def remove_card(self, card):
-        self.hand.remove(card)
+    def removeCard(self, family, value):
+        """ Deletes an existing card from hand"""
+        self.hand[family].remove(value)
 
     def iswin(self):
-        # TODO
+        """ Checks if winnning conditions have been met by player """
+        for fam in self.hand:
+            if len(fam) == 4:
+                return True
         return False

@@ -1,4 +1,4 @@
-# quantum-quartet
+# quantum-quartet (WIP)
 
 Helper tool for card game "Quantenquartett" (German, "quantum quartet")
 

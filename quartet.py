@@ -1,5 +1,6 @@
 from classes import *
 import random
+import sys
 
 # the size of any family
 FAMILYSIZE = 4
@@ -7,17 +8,16 @@ FAMILYSIZE = 4
 # whether playorder follows a fixed scheme or depends on the asker/askee
 FIXED = False
 
-def printhand():
+# functions for debugging
+def printhand(players):
     for p in players:
         print (p)
         print (players[p])
 
-def printlib():
-    print (lib)
-
-
 def paradox(name):
+    """ Called upon creation of paradox by player name """
     print("Player {} created a paradox.".format(name))
+    sys.exit()
 
 
 def main():
@@ -51,18 +51,17 @@ def main():
     lib = library(names)
 
     # cycle through the players until win conditions are met or a paradox happens
-    # TODO: have two modes for either fixed or flexible order
     playorder = [random.choice(list(players))]
 
     for nameQ in playorder:
 
         profile = players[nameQ]
 
-        # announce whose turn it is
-        print ("This is {}'s turn.".format(nameQ))
-
         # ask questions until person says no
         while True:
+
+            # announce whose turn it is
+            print ("This is {}'s turn.".format(nameQ))
 
             # get a valid name
             while True:
@@ -74,6 +73,7 @@ def main():
                 else:
                     break
 
+            # get card and check if it is valid
             family = input("What is the family of the card? ")
             value = input("What is the value of the card? ")
             try:
@@ -82,7 +82,8 @@ def main():
             except ValueError:
                 paradox(nameQ)
 
-            printhand()
+            printhand(players)
+            print (lib)
 
             # get the answer of the player that was asked
             while True:
@@ -90,44 +91,36 @@ def main():
                 if response in ["y", "n"]:
                     break
 
-            owners = library[family][value]
-            # IS THIS MUTABLE? YES
+            owners = lib.getOwners(family, value)
 
             # check whether the answer creates a paradox
             if (response == "n" and owners == [nameA] or
                 response == "y" and nameA not in owners):
                 paradox(nameA)
 
-            # remove the askee from list of owners
-            if response == "n":
-                # if only one owner left, assign card to them
-                if len(owners) == 2:
-                    owners = nameQ
-                    hand = players[nameQ]
-                    hand.assign_card(card)
-                else:
-                    owners.remove(nameA)
-
             # give card to the player who asked
             if response == "y":
                 if len(owners) > 1:
-                    players[nameA].assign_card(card)
-                owners = nameQ
+                    players[nameA].assignCard(family, value)
                 # change their hands accordingly
-                players[nameQ].assign_card(card, new=True)
-                players[nameA].remove_card(card)
+                players[nameQ].assignCard(family, value, new=True)
+                players[nameA].removeCard(family, value)
+                lib.setOwner(family, value, [nameQ])
 
-            # TESTING
-            for p in players:
-                print (p)
-                print (players[p].__str__())
+            if response == "n":
+                # remove the askee from list of potential owners
+                owners.remove(nameA)
+                lib.setOwner(family, value, owners)
+                # if only one owner left, assign card to them
+                if len(owners) == 1:
+                    owner = owners[0]
+                    players[owner].assignCard(family, value)
+
+            printhand(players)
+            print (lib)
 
             # if they negated or the player won, stop this player's turn
             if response == "n" or profile.iswin():
-                # if FIXED:
-                #     #TODO
-                # # the next person to ask is the askee
-                # else:
                 playorder.append(nameA)
                 break
 
