@@ -26,7 +26,6 @@ class library(object):
             else:
                 raise ValueError
 
-
     def getOwners(self, family, value):
         """ Gets owners of a given card """
         return self.lib[family][value]
@@ -36,6 +35,7 @@ class library(object):
         return self.lib[family]
 
     def setOwner(self, family, value, names):
+        """ Set owner of a card to given input """
         self.lib[family][value] = names
 
     def __str__(self):
@@ -45,7 +45,8 @@ class library(object):
                 res += value + " in the family of " + family + " has owners " + ' '.join(self.lib[family][value]) + "\n"
         return res
 
-class newhand(object):
+
+class playerhand(object):
     """
     Keeps track of cards in a player's hand.
     Implementation: {family: [values], None: int}
@@ -67,6 +68,7 @@ class newhand(object):
                 raise ValueError
 
     def countFamily(self, family):
+        """ Returns number of cards in a family in player's hand """
         return len(self.hand[family])
 
     def assignCard(self, family, value, new=False):
@@ -88,16 +90,6 @@ class newhand(object):
             else:
                 raise ValueError
 
-    def __str__(self):
-        res = ""
-        for family in self.hand:
-            if family == None:
-                res += str(self.hand[family]) + " undefined\n"
-            else:
-                for value in self.hand[family]:
-                    res += str(value) + " in the family of " + str(family) + "\n"
-        return res
-
     def removeCard(self, family, value):
         """ Deletes an existing card from hand"""
         self.hand[family].remove(value)
@@ -108,3 +100,13 @@ class newhand(object):
             if fam != None and len(self.hand[fam]) == 4:
                 return True
         return False
+
+    def __str__(self):
+        res = ""
+        for family in self.hand:
+            if family == None:
+                res += str(self.hand[family]) + " undefined\n"
+            else:
+                for value in self.hand[family]:
+                    res += str(value) + " in the family of " + str(family) + "\n"
+        return res

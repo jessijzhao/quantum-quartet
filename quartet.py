@@ -64,7 +64,7 @@ def main():
             if name in names:
                 print("Names have to be unique. ", end='')
         # initialize hand for each player
-        players[name] = newhand()
+        players[name] = playerhand()
         names.append(name)
 
     # initialize library
