@@ -31,6 +31,10 @@ class library(object):
         """ Gets owners of a given card """
         return self.lib[family][value]
 
+    def isFull(self, family):
+        """ Check if all values of a family have been defined """
+        return self.lib[family]
+
     def setOwner(self, family, value, names):
         self.lib[family][value] = names
 
@@ -61,6 +65,9 @@ class newhand(object):
                 self.hand[family] = [None]
             else:
                 raise ValueError
+
+    def countFamily(self, family):
+        return len(self.hand[family])
 
     def assignCard(self, family, value, new=False):
         """Assigns card to player's hand"""

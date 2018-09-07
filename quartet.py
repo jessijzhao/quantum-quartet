@@ -8,7 +8,7 @@ FAMILYSIZE = 4
 # whether playorder follows a fixed scheme or depends on the asker/askee
 FIXED = False
 
-DEBUG = False
+DEBUG = not False
 
 # functions for debugging
 def printstate(players, lib):
@@ -16,6 +16,23 @@ def printstate(players, lib):
         print (p + "'s hand:")
         print (players[p])
     print (lib)
+
+
+def assignLast(family):
+    """ When only few cards have uncertain owners """
+    pass
+
+
+def checkHands(players, family):
+    """ Check that there aren't more than FAMILYSIZE cards of a family """
+    count = 0
+    for p in players:
+        try:
+            count += players[p].countFamily(family)
+        except KeyError:
+            pass
+    return count <= FAMILYSIZE
+
 
 def paradox(name):
     """ Called upon creation of paradox by player name """
@@ -85,6 +102,13 @@ def main():
             except ValueError:
                 paradox(nameQ)
 
+            # checks for too many None cards
+            if not checkHands(players, family):
+                paradox(nameQ)
+
+            if lib.isFull(family):
+                # assign card to person who has a None card (if applicable)
+                pass
 
             if DEBUG:
                 printstate(players, lib)
@@ -112,13 +136,17 @@ def main():
                 lib.setOwner(family, value, [nameQ])
 
             if response == "n":
-                # remove the askee from list of potential owners
-                owners.remove(nameA)
-                lib.setOwner(family, value, owners)
-                # if only one owner left, assign card to them
-                if len(owners) == 1:
-                    owner = owners[0]
-                    players[owner].assignCard(family, value)
+                if nameA in owners:
+                    # remove the askee from list of potential owners
+                    owners.remove(nameA)
+                    lib.setOwner(family, value, owners)
+                    # if only one owner left, assign card to them
+                    if len(owners) == 1:
+                        owner = owners[0]
+                        players[owner].assignCard(family, value)
+
+            if not checkHands(players, family):
+                paradox(nameA)
 
             if DEBUG:
                 printstate(players, lib)
