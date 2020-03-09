@@ -32,7 +32,7 @@ class library(object):
 
     def isFull(self, family):
         """ Check if all values of a family have been defined """
-        return self.lib[family]
+        return len(self.lib[family]) == 4
 
     def setOwner(self, family, value, names):
         """ Set owner of a card to given input """

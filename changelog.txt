@@ -1,8 +1,13 @@
 TODO:
+- note to self: update implementation of library and hands maybe using ids
 - figure out automatic assignment logic!!
+  - add None to library?
 - have two modes for either fixed or flexible order
-- use card ids??? there are always FAMILYSIZE * PLAYERS cards
-  -> probably inefficient
+
+
+Changes in 0.3:
+- proofread some documentation
+- added thoughts re automatic assignment
 
 Changes in 0.2.2:
 - added checkHands to prevent having too many None in a family cards in a game
@@ -23,19 +28,3 @@ Changes in 0.1:
 
 Pre-Changelog:
 - major restructuring from having a card class and no library class
-
-git filter-branch --env-filter '
-OLD_EMAIL="Jazz Zhao"
-CORRECT_NAME="jessijzhao"
-CORRECT_EMAIL="jessijzhao@gmail.com"
-if [ "$GIT_COMMITTER_NAME" = "$OLD_EMAIL" ]
-then
-    export GIT_COMMITTER_NAME="$CORRECT_NAME"
-    export GIT_COMMITTER_EMAIL="$CORRECT_EMAIL"
-fi
-if [ "$GIT_AUTHOR_NAME" = "$OLD_EMAIL" ]
-then
-    export GIT_AUTHOR_NAME="$CORRECT_NAME"
-    export GIT_AUTHOR_EMAIL="$CORRECT_EMAIL"
-fi
-' --tag-name-filter cat -- --branches --tags

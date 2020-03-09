@@ -8,9 +8,9 @@ FAMILYSIZE = 4
 # whether playorder follows a fixed scheme or depends on the asker/askee
 FIXED = False
 
-DEBUG = not False
+VERBOSE = True
 
-# functions for debugging
+# function for debugging
 def printstate(players, lib):
     for p in players:
         print (p + "'s hand:")
@@ -108,9 +108,9 @@ def main():
 
             if lib.isFull(family):
                 # assign card to person who has a None card (if applicable)
-                pass
+                assignLast(family)
 
-            if DEBUG:
+            if VERBOSE:
                 printstate(players, lib)
 
             # get the answer of the player that was asked
@@ -148,7 +148,7 @@ def main():
             if not checkHands(players, family):
                 paradox(nameA)
 
-            if DEBUG:
+            if VERBOSE:
                 printstate(players, lib)
 
             # if they negated or the player won, stop this player's turn
