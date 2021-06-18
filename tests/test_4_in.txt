@@ -1,0 +1,16 @@
+c
+a
+fruits
+apple
+y
+a
+fruits
+banana
+y
+a
+fruits
+pear
+y
+
+
+# same as test_0 with family of fruits

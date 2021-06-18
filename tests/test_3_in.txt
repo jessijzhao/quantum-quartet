@@ -1,0 +1,24 @@
+c
+a
+0
+0
+y
+a
+0
+1
+y
+a
+0
+2
+n
+a
+c
+0
+3
+n
+a
+0
+4
+
+
+# c gets 00, 01, but not 02 from a. a asks c for 03, c asks a for 04 (too many values)

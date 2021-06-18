@@ -1,0 +1,12 @@
+c
+a
+0
+0
+y
+b
+0
+0
+y
+
+
+# c gets 00 from a and b insists they have 00

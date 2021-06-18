@@ -1,13 +1,22 @@
-# quantum-quartet (WIP)
+# Quantum Quartet
 
-Helper tool for card game "Quantenquartett" (German, "quantum quartet")
+Helper tool for card game "Quantenquartett" (German for "quantum quartet").
 
 Given complete history of actions, will tell players when game ending conditions (i.e. paradox or win) occur.
 
-The actual purpose of this small project is to find a fitting representation of the game state to prepare for creating a visualization.
+## Contents
 
-## Running the game
-Simply run `python quartet`. For rules to the game see [here](rules.txt).
+- [rules.md](rules.md) contains the rules for the game
 
-## Prerequisites
-Requires Python 3.x.
+- [quartet.py](quartet.py) runs the game
+
+- [tracker.py](tracker.py) implements representation and manipulation of the game state
+
+
+## Usage
+
+```
+usage: quartet.py [-h] (-d | -e) input output
+```
+
+Requires Python 3.6+.

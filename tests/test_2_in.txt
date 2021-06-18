@@ -1,0 +1,15 @@
+c
+a
+0
+0
+n
+b
+0
+0
+n
+c
+0
+0
+n
+
+# a, b, and c all deny having 00
