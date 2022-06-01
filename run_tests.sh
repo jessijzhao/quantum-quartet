@@ -34,7 +34,8 @@ for test_in in "${tests[@]}"; do
     if [ "$(tail -1 tests/temp.txt)" = "$(tail -1 ${test_in::12}_out.txt)" ]; then
         echo -e "- $teststr ${green}passed${reset}"
     else
-        echo -e "- $teststr ${red}failed${reset}"
+        echo -e "- $teststr ${red}failed"
+        echo -e " Intended output is \"$(tail -1 ${test_in::12}_out.txt)\" but actual output is \"$(tail -1 tests/temp.txt)\"${reset}"
         (( count_failed++ ))
     fi
 done

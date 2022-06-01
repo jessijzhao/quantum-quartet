@@ -12,6 +12,8 @@ Given complete history of actions, will tell players when game ending conditions
 
 - [tracker.py](tracker.py) implements representation and manipulation of the game state
 
+- [run_tests.sh](run_tests.sh) runs all tests in [tests](tests)
+
 
 ## Usage
 
