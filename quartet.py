@@ -8,42 +8,52 @@ Implements the game Quantenquartett.
 """
 
 import argparse
-import random
 
 from tracker import StateTracker
+from utils import Actions, ActionType
 
 
-def resolve(code):
+def resolve(code: int, player: str) -> bool:
     """
-    code: tuple representing the result of the action and the responsible player
-          - 0 represents a valid action without a win
-          - 1 represents a win
-          - 2 represents a paradox
+    Args:
+        code: whether the action is valid, results in a win, or paradox
+        player: name of the responsible player
 
+    Returns:
+        - True if the game continues
+        - False if the game ends.
 
-    Returns 1 if the game continues, 0 if the game ends. Prints a message if needed.
+    Prints a message if needed.
     """
-    code, player = code
-
-    assert(code in (0, 1, 2))
-
-    if code == 0:
-        return 1
-    elif code == 1:
+    if code == ActionType.VALID:
+        return True
+    elif code == ActionType.WIN:
         print(f"\n{player} won the game.")
-        return 0
+        return False
     else:
+        assert code == ActionType.LOSS
         print(f"\n{player} created a paradox.")
-        return 0
+        return False
 
 
-def main():
+def main() -> None:
 
     parser = argparse.ArgumentParser()
-    parser.add_argument('names', metavar='names', type=str, nargs='+',
-                        help='player names')
-    parser.add_argument('-f', '--familysize', nargs='?', type=int, default=4,
-                        help='number of cards in each family')
+    parser.add_argument(
+        "names",
+        nargs="+",
+        type=str,
+        help="player names",
+        metavar="names",
+    )
+    parser.add_argument(
+        "-f",
+        "--familysize",
+        nargs="?",
+        default=4,
+        type=int,
+        help="number of cards in each family",
+    )
     args = parser.parse_args()
 
     print("Welcome to Quantum Quartet!")
@@ -68,7 +78,7 @@ def main():
 
     while True:
 
-        print (f"This is {player_1}'s turn.")
+        print(f"This is {player_1}'s turn.")
 
         while True:
             player_2 = input("Who are you asking? ").lower()
@@ -77,21 +87,22 @@ def main():
 
         family = input("What is the family of the card? ")
         value = input("What is the value of the card? ")
-        code = state.update_state(player_1, player_2, family, value, 'q')
-        if not resolve(code):
+        code = state.update_state(player_1, player_2, family, value, Actions.QUESTION)
+        if not resolve(*code):
             quit()
 
         while True:
             response = input(f"{player_2}'s reponse (y/n): ").lower()
-            if response in ('y', 'n'):
+            if response in (Actions.POSITIVE, Actions.NEGATIVE):
                 break
 
         code = state.update_state(player_1, player_2, family, value, response)
-        if not resolve(code):
+        if not resolve(*code):
             quit()
 
-        if response == 'n':
+        if response == "n":
             player_1 = player_2
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     main()
